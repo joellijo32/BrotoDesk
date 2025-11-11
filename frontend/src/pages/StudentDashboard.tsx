@@ -186,6 +186,18 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Client-side validation
+    if (title.trim().length < 5) {
+      toast.error('Title must be at least 5 characters')
+      return
+    }
+    
+    if (description.trim().length < 10) {
+      toast.error('Description must be at least 10 characters')
+      return
+    }
+    
     setLoading(true)
 
     try {
@@ -205,13 +217,20 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
         <h2 className="text-2xl font-bold mb-6">New Complaint</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Title
+              <span className={`ml-2 text-xs ${title.length >= 5 ? 'text-green-600' : 'text-gray-400'}`}>
+                ({title.length}/5 min)
+              </span>
+            </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="input"
+              placeholder="Enter complaint title (min 5 characters)"
               required
+              minLength={5}
             />
           </div>
           <div>
@@ -223,18 +242,29 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Description
+              <span className={`ml-2 text-xs ${description.length >= 10 ? 'text-green-600' : 'text-gray-400'}`}>
+                ({description.length}/10 min)
+              </span>
+            </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="input"
               rows={6}
+              placeholder="Describe your complaint in detail (min 10 characters)"
               required
+              minLength={10}
             />
           </div>
           <div className="flex gap-3">
             <button type="button" onClick={onClose} className="btn-secondary flex-1">Cancel</button>
-            <button type="submit" disabled={loading} className="btn-primary flex-1">
+            <button 
+              type="submit" 
+              disabled={loading || title.length < 5 || description.length < 10} 
+              className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               {loading ? 'Creating...' : 'Create Complaint'}
             </button>
           </div>

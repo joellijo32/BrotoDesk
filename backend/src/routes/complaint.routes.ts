@@ -22,11 +22,17 @@ const updateStatusSchema = z.object({
 // Create complaint (Student only)
 router.post('/', authenticate, async (req: AuthRequest, res, next) => {
   try {
+    console.log('Received complaint data:', req.body); // Debug log
     const data = createComplaintSchema.parse(req.body);
+    
+    console.log('Creating complaint with data:', data); // Debug log
     
     const complaint = await prisma.complaint.create({
       data: {
-        ...data,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        priority: data.priority || 'MEDIUM',
         studentId: req.user!.id
       },
       include: {
@@ -41,25 +47,33 @@ router.post('/', authenticate, async (req: AuthRequest, res, next) => {
       }
     });
     
+    console.log('Complaint created:', complaint); // Debug log
+    
     // Create notification for admins
     const admins = await prisma.user.findMany({
       where: { role: { in: ['ADMIN', 'SUPERADMIN'] } },
       select: { id: true }
     });
     
-    await prisma.notification.createMany({
-      data: admins.map((admin: { id: string }) => ({
-        userId: admin.id,
-        type: 'NEW_COMPLAINT',
-        message: `New complaint: ${complaint.title}`
-      }))
-    });
+    if (admins.length > 0) {
+      await prisma.notification.createMany({
+        data: admins.map((admin: { id: string }) => ({
+          userId: admin.id,
+          type: 'NEW_COMPLAINT',
+          message: `New complaint: ${complaint.title}`
+        }))
+      });
+    }
     
     res.status(201).json({
       message: 'Complaint created successfully',
       complaint
     });
   } catch (error) {
+    console.error('Error creating complaint:', error); // Debug log
+    if (error instanceof z.ZodError) {
+      console.error('Validation error:', error.errors);
+    }
     next(error);
   }
 });
