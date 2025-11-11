@@ -73,13 +73,11 @@ export default function ComplaintDetail() {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      PENDING: 'bg-yellow-100 text-yellow-800',
-      IN_PROGRESS: 'bg-blue-100 text-blue-800',
-      RESOLVED: 'bg-green-100 text-green-800',
-      REOPENED: 'bg-orange-100 text-orange-800',
-      CLOSED: 'bg-gray-100 text-gray-800'
+      PENDING: 'bg-yellow-100 text-yellow-800 border border-yellow-300',
+      IN_PROGRESS: 'bg-blue-100 text-blue-800 border border-blue-300',
+      RESOLVED: 'bg-green-100 text-green-800 border border-green-300'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800 border border-gray-300'
   }
 
   if (loading) {
@@ -166,34 +164,43 @@ export default function ComplaintDetail() {
 
         {isAdmin && (
           <div className="card">
-            <h2 className="text-xl font-bold mb-4">Update Complaint</h2>
+            <h2 className="text-xl font-bold mb-4">Update Complaint Status</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                  <span className="ml-2 text-xs text-gray-500">(Current: {complaint.status.replace('_', ' ')})</span>
+                </label>
                 <select value={status} onChange={(e) => setStatus(e.target.value)} className="input">
-                  <option value="PENDING">Pending</option>
-                  <option value="IN_PROGRESS">In Progress</option>
-                  <option value="RESOLVED">Resolved</option>
-                  <option value="REOPENED">Reopened</option>
-                  <option value="CLOSED">Closed</option>
+                  <option value="PENDING">Pending - Waiting for review</option>
+                  <option value="IN_PROGRESS">In Progress - Working on it</option>
+                  <option value="RESOLVED">Resolved - Issue fixed</option>
                 </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  {status === 'PENDING' && 'Complaint received, awaiting action'}
+                  {status === 'IN_PROGRESS' && 'Admin is actively working on this complaint'}
+                  {status === 'RESOLVED' && 'Issue has been fixed and complaint is closed'}
+                </p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Admin Response</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Admin Response
+                  <span className="ml-1 text-red-500">*</span>
+                </label>
                 <textarea
                   value={response}
                   onChange={(e) => setResponse(e.target.value)}
                   className="input"
                   rows={4}
-                  placeholder="Add your response or notes..."
+                  required
                 />
               </div>
               <button
                 onClick={handleUpdateStatus}
-                disabled={updating}
-                className="btn-primary disabled:opacity-50"
+                disabled={updating || !response.trim()}
+                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed w-full"
               >
-                {updating ? 'Updating...' : 'Update Complaint'}
+                {updating ? 'Updating...' : 'Update & Notify Student'}
               </button>
             </div>
           </div>
