@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { prisma } from '../lib/prisma';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth.middleware';
 import { AppError } from '../middleware/error.middleware';
+import { upload } from '../config/multer';
 
 const router = Router();
 
@@ -210,7 +211,7 @@ router.post('/:id/status', authenticate, authorize('ADMIN', 'SUPERADMIN'), async
         action: 'UPDATE_COMPLAINT_STATUS',
         targetType: 'COMPLAINT',
         targetId: complaint.id,
-        details: { status: data.status, adminResponse: data.adminResponse }
+        details: JSON.stringify({ status: data.status, adminResponse: data.adminResponse })
       }
     });
     
@@ -239,6 +240,95 @@ router.post('/:id/assign', authenticate, authorize('ADMIN', 'SUPERADMIN'), async
       message: 'Complaint assigned successfully',
       complaint
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Upload attachment to complaint
+router.post('/:id/attachments', authenticate, upload.single('photo'), async (req: AuthRequest, res, next) => {
+  try {
+    if (!req.file) {
+      throw new AppError('No file uploaded', 400);
+    }
+
+    const complaint = await prisma.complaint.findUnique({
+      where: { id: req.params.id },
+      select: { studentId: true }
+    });
+
+    if (!complaint) {
+      throw new AppError('Complaint not found', 404);
+    }
+
+    // Only the student who created the complaint can upload attachments
+    if (complaint.studentId !== req.user!.id) {
+      throw new AppError('Unauthorized', 403);
+    }
+
+    const attachment = await prisma.attachment.create({
+      data: {
+        complaintId: req.params.id,
+        fileName: req.file.originalname,
+        fileKey: req.file.filename,
+        mimeType: req.file.mimetype,
+        fileSize: req.file.size
+      }
+    });
+
+    res.status(201).json({
+      message: 'Attachment uploaded successfully',
+      attachment
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Get attachments for a complaint
+router.get('/:id/attachments', authenticate, async (req: AuthRequest, res, next) => {
+  try {
+    const attachments = await prisma.attachment.findMany({
+      where: { complaintId: req.params.id },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    res.json({ attachments });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Delete attachment
+router.delete('/attachments/:attachmentId', authenticate, async (req: AuthRequest, res, next) => {
+  try {
+    const attachment = await prisma.attachment.findUnique({
+      where: { id: req.params.attachmentId },
+      include: { complaint: { select: { studentId: true } } }
+    });
+
+    if (!attachment) {
+      throw new AppError('Attachment not found', 404);
+    }
+
+    // Only the student who created the complaint can delete attachments
+    if (attachment.complaint.studentId !== req.user!.id) {
+      throw new AppError('Unauthorized', 403);
+    }
+
+    // Delete file from disk
+    const fs = await import('fs');
+    const path = await import('path');
+    const filePath = path.join(__dirname, '../../uploads', attachment.fileKey);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    await prisma.attachment.delete({
+      where: { id: req.params.attachmentId }
+    });
+
+    res.json({ message: 'Attachment deleted successfully' });
   } catch (error) {
     next(error);
   }

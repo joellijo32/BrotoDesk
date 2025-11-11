@@ -44,6 +44,23 @@ export const complaintAPI = {
   
   assign: (id: string, adminId: string) =>
     api.post(`/complaints/${id}/assign`, { adminId }),
+  
+  // Attachment APIs
+  uploadAttachment: (complaintId: string, file: File) => {
+    const formData = new FormData()
+    formData.append('photo', file)
+    return api.post(`/complaints/${complaintId}/attachments`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  },
+  
+  getAttachments: (complaintId: string) =>
+    api.get(`/complaints/${complaintId}/attachments`),
+  
+  deleteAttachment: (attachmentId: string) =>
+    api.delete(`/complaints/attachments/${attachmentId}`),
 }
 
 // Notification APIs

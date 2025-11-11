@@ -4,11 +4,21 @@ import { useAuth } from '../context/AuthContext'
 import { complaintAPI } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
-import { ArrowLeft, User, Calendar, Tag } from 'lucide-react'
+import { ArrowLeft, User, Calendar, Tag, Image as ImageIcon } from 'lucide-react'
+
+interface Attachment {
+  id: string
+  fileName: string
+  fileKey: string
+  mimeType: string
+  fileSize: number
+  createdAt: string
+}
 
 export default function ComplaintDetail() {
   const { id } = useParams()
   const [complaint, setComplaint] = useState<Complaint | null>(null)
+  const [attachments, setAttachments] = useState<Attachment[]>([])
   const [loading, setLoading] = useState(true)
   const [status, setStatus] = useState('')
   const [response, setResponse] = useState('')
@@ -17,7 +27,10 @@ export default function ComplaintDetail() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (id) fetchComplaint()
+    if (id) {
+      fetchComplaint()
+      fetchAttachments()
+    }
   }, [id])
 
   const fetchComplaint = async () => {
@@ -34,6 +47,15 @@ export default function ComplaintDetail() {
     }
   }
 
+  const fetchAttachments = async () => {
+    try {
+      const { data } = await complaintAPI.getAttachments(id!)
+      setAttachments(data.attachments)
+    } catch (error) {
+      console.error('Failed to load attachments:', error)
+    }
+  }
+
   const handleUpdateStatus = async () => {
     if (!complaint) return
     setUpdating(true)
@@ -41,10 +63,10 @@ export default function ComplaintDetail() {
     try {
       await complaintAPI.updateStatus(complaint.id, { status, adminResponse: response })
       toast.success('Complaint updated successfully')
-      fetchComplaint()
+      // Navigate back to admin dashboard after successful update
+      navigate('/admin')
     } catch (error: any) {
       toast.error(error.response?.data?.error || 'Update failed')
-    } finally {
       setUpdating(false)
     }
   }
@@ -106,6 +128,33 @@ export default function ComplaintDetail() {
             <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
             <p className="text-gray-700 whitespace-pre-wrap">{complaint.description}</p>
           </div>
+
+          {/* Attachments */}
+          {attachments.length > 0 && (
+            <div className="border-t pt-6 mt-6">
+              <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <ImageIcon className="w-5 h-5" />
+                Photo Evidence
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {attachments.map((attachment) => (
+                  <div key={attachment.id} className="relative group">
+                    <img
+                      src={`http://localhost:5000/uploads/${attachment.fileKey}`}
+                      alt={attachment.fileName}
+                      className="w-full h-64 object-cover rounded-lg border-2 border-gray-200"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 rounded-b-lg">
+                      <p className="text-sm truncate">{attachment.fileName}</p>
+                      <p className="text-xs text-gray-300">
+                        {(attachment.fileSize / 1024).toFixed(1)} KB
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {complaint.adminResponse && (
             <div className="border-t pt-6 mt-6">

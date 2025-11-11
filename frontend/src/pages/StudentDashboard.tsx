@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { complaintAPI } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
-import { Plus, LogOut, Bell, FileText, Clock, CheckCircle } from 'lucide-react'
+import { Plus, LogOut, Bell, FileText, Clock, CheckCircle, Upload, X } from 'lucide-react'
 
 export default function StudentDashboard() {
   const [complaints, setComplaints] = useState<Complaint[]>([])
@@ -180,9 +180,42 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('OTHER')
+  const [photo, setPhoto] = useState<File | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const categories = ['HOSTEL', 'PLACEMENT', 'MENTOR', 'SYSTEM_ISSUE', 'INFRASTRUCTURE', 'ACADEMICS', 'OTHER']
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select an image file')
+        return
+      }
+      
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size must be less than 5MB')
+        return
+      }
+      
+      setPhoto(file)
+      
+      // Create preview
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removePhoto = () => {
+    setPhoto(null)
+    setPhotoPreview(null)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -201,7 +234,15 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
     setLoading(true)
 
     try {
-      await complaintAPI.create({ title, description, category })
+      // Create complaint first
+      const response = await complaintAPI.create({ title, description, category })
+      const complaintId = response.data.complaint.id
+      
+      // Upload photo if selected
+      if (photo) {
+        await complaintAPI.uploadAttachment(complaintId, photo)
+      }
+      
       toast.success('Complaint created successfully!')
       onSuccess()
     } catch (error: any) {
@@ -258,6 +299,48 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
               minLength={10}
             />
           </div>
+          
+          {/* Photo Upload */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Photo Evidence (Optional)
+              <span className="ml-2 text-xs text-gray-500">Max 5MB - JPEG, PNG, GIF, WebP</span>
+            </label>
+            
+            {photoPreview ? (
+              <div className="relative">
+                <img 
+                  src={photoPreview} 
+                  alt="Preview" 
+                  className="w-full h-48 object-cover rounded-lg border-2 border-gray-300"
+                />
+                <button
+                  type="button"
+                  onClick={removePhoto}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <Upload className="w-10 h-10 mb-2 text-gray-400" />
+                  <p className="text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span> or drag and drop
+                  </p>
+                  <p className="text-xs text-gray-400">PNG, JPG, GIF, WebP (MAX. 5MB)</p>
+                </div>
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                />
+              </label>
+            )}
+          </div>
+          
           <div className="flex gap-3">
             <button type="button" onClick={onClose} className="btn-secondary flex-1">Cancel</button>
             <button 
