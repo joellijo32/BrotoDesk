@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "🔹 BrotoDesk (Root)",
+      "path": "."
+    },
+    {
+      "name": "⚙️ Backend",
+      "path": "backend"
+    },
+    {
+      "name": "🎨 Frontend",
+      "path": "frontend"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.env": false
+    }
+  }
+}
