@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -39,59 +40,64 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-dark-bg dark:via-dark-300 dark:to-dark-200 flex items-center justify-center px-4 py-12 transition-colors duration-500">
+      {/* Theme Toggle - Floating */}
+      <div className="fixed top-6 right-6 z-50">
+        <ThemeToggle />
+      </div>
+      
       <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
         
         {/* Left Side - Branding */}
         <div className="hidden lg:flex flex-col justify-center space-y-6 px-8">
           <div className="space-y-4">
             <div className="inline-block">
-              <span className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
                 BrotoDesk
               </span>
             </div>
-            <h2 className="text-3xl font-semibold text-gray-800">
+            <h2 className="text-3xl font-semibold text-gray-800 dark:text-dark-text">
               Complaint Management System
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 dark:text-dark-muted">
               A streamlined platform for Brototype students to raise and track complaints efficiently.
             </p>
           </div>
           
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-blue-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Quick Resolution</h3>
-                <p className="text-sm text-gray-600">Get your complaints addressed promptly by administrators</p>
+                <h3 className="font-semibold text-gray-800 dark:text-dark-text">Quick Resolution</h3>
+                <p className="text-sm text-gray-600 dark:text-dark-muted">Get your complaints addressed promptly by administrators</p>
               </div>
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Track Progress</h3>
-                <p className="text-sm text-gray-600">Monitor your complaint status in real-time</p>
+                <h3 className="font-semibold text-gray-800 dark:text-dark-text">Track Progress</h3>
+                <p className="text-sm text-gray-600 dark:text-dark-muted">Monitor your complaint status in real-time</p>
               </div>
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Secure & Private</h3>
-                <p className="text-sm text-gray-600">Your data is protected with industry-standard security</p>
+                <h3 className="font-semibold text-gray-800 dark:text-dark-text">Secure & Private</h3>
+                <p className="text-sm text-gray-600 dark:text-dark-muted">Your data is protected with industry-standard security</p>
               </div>
             </div>
           </div>
@@ -99,24 +105,24 @@ export default function Login() {
 
         {/* Right Side - Login Form */}
         <div className="w-full">
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+          <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl dark:shadow-dark-xl p-8 border border-gray-100 dark:border-dark-border backdrop-blur-sm">
             <div className="mb-8">
               <div className="flex items-center justify-center lg:justify-start mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 dark:from-purple-500 dark:to-pink-500 rounded-xl flex items-center justify-center shadow-lg dark:shadow-glow">
                   <LogIn className="w-6 h-6 text-white" />
                 </div>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-              <p className="text-gray-600">Sign in to access your dashboard</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-dark-text mb-2">Welcome Back</h1>
+              <p className="text-gray-600 dark:text-dark-muted">Sign in to access your dashboard</p>
             </div>
 
             {/* Sample Credentials Info */}
-            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+            <div className="mb-6 p-4 bg-blue-50 dark:bg-purple-900/20 border border-blue-200 dark:border-purple-700/30 rounded-xl">
               <div className="flex items-start space-x-2">
-                <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-blue-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
-                  <p className="font-semibold text-blue-900 mb-2">Test Credentials:</p>
-                  <div className="space-y-1 text-blue-800">
+                  <p className="font-semibold text-blue-900 dark:text-purple-300 mb-2">Test Credentials:</p>
+                  <div className="space-y-1 text-blue-800 dark:text-purple-200">
                     <p><strong>Admin:</strong> admin@brototype.com / admin123</p>
                     <p><strong>Student:</strong> student@brototype.com / student123</p>
                   </div>
@@ -126,19 +132,19 @@ export default function Login() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
                   Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400" />
+                    <Mail className="h-5 w-5 text-gray-400 dark:text-dark-muted" />
                   </div>
                   <input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none text-gray-900"
+                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-dark-border rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent transition-all outline-none text-gray-900 dark:text-dark-text dark:bg-dark-300"
                     placeholder="you@example.com"
                     required
                   />
@@ -146,19 +152,19 @@ export default function Login() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400" />
+                    <Lock className="h-5 w-5 text-gray-400 dark:text-dark-muted" />
                   </div>
                   <input
                     id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none text-gray-900"
+                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-dark-border rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent transition-all outline-none text-gray-900 dark:text-dark-text dark:bg-dark-300"
                     placeholder="••••••••"
                     required
                   />
@@ -168,7 +174,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/30"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 dark:from-purple-600 dark:to-pink-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 dark:hover:from-purple-700 dark:hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-purple-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/30 dark:shadow-purple-500/30 hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">

@@ -5,6 +5,7 @@ import { complaintAPI } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
 import { ArrowLeft, User, Calendar, Tag, Image as ImageIcon } from 'lucide-react'
+import ThemeToggle from '../components/ThemeToggle'
 
 interface Attachment {
   id: string
@@ -73,17 +74,17 @@ export default function ComplaintDetail() {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      PENDING: 'bg-yellow-100 text-yellow-800 border border-yellow-300',
-      IN_PROGRESS: 'bg-blue-100 text-blue-800 border border-blue-300',
-      RESOLVED: 'bg-green-100 text-green-800 border border-green-300'
+      PENDING: 'bg-yellow-100 text-yellow-800 border border-yellow-300 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-700/30',
+      IN_PROGRESS: 'bg-blue-100 text-blue-800 border border-blue-300 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700/30',
+      RESOLVED: 'bg-green-100 text-green-800 border border-green-300 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700/30'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800 border border-gray-300'
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800 border border-gray-300 dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-700/30'
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen dark:bg-dark-bg flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 dark:border-purple-400"></div>
       </div>
     )
   }
@@ -91,7 +92,12 @@ export default function ComplaintDetail() {
   if (!complaint) return null
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg py-8">
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <button onClick={() => navigate(-1)} className="btn-secondary flex items-center gap-2 mb-6">
           <ArrowLeft className="w-4 h-4" />
@@ -101,8 +107,8 @@ export default function ComplaintDetail() {
         <div className="card mb-6">
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">{complaint.title}</h1>
-              <div className="flex items-center gap-4 text-sm text-gray-600">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-dark-text mb-2">{complaint.title}</h1>
+              <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-dark-muted">
                 <div className="flex items-center gap-1">
                   <User className="w-4 h-4" />
                   {complaint.student.name}
@@ -122,15 +128,15 @@ export default function ComplaintDetail() {
             </span>
           </div>
 
-          <div className="border-t pt-6">
-            <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
-            <p className="text-gray-700 whitespace-pre-wrap">{complaint.description}</p>
+          <div className="border-t dark:border-dark-border pt-6">
+            <h3 className="font-semibold text-gray-900 dark:text-dark-text mb-2">Description</h3>
+            <p className="text-gray-700 dark:text-dark-muted whitespace-pre-wrap">{complaint.description}</p>
           </div>
 
           {/* Attachments */}
           {attachments.length > 0 && (
-            <div className="border-t pt-6 mt-6">
-              <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <div className="border-t dark:border-dark-border pt-6 mt-6">
+              <h3 className="font-semibold text-gray-900 dark:text-dark-text mb-3 flex items-center gap-2">
                 <ImageIcon className="w-5 h-5" />
                 Photo Evidence
               </h3>
@@ -140,11 +146,11 @@ export default function ComplaintDetail() {
                     <img
                       src={`http://localhost:5000/uploads/${attachment.fileKey}`}
                       alt={attachment.fileName}
-                      className="w-full h-64 object-cover rounded-lg border-2 border-gray-200"
+                      className="w-full h-64 object-cover rounded-lg border-2 border-gray-200 dark:border-dark-border"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 rounded-b-lg">
+                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 dark:bg-opacity-70 text-white p-2 rounded-b-lg">
                       <p className="text-sm truncate">{attachment.fileName}</p>
-                      <p className="text-xs text-gray-300">
+                      <p className="text-xs text-gray-300 dark:text-gray-400">
                         {(attachment.fileSize / 1024).toFixed(1)} KB
                       </p>
                     </div>
@@ -155,37 +161,37 @@ export default function ComplaintDetail() {
           )}
 
           {complaint.adminResponse && (
-            <div className="border-t pt-6 mt-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Admin Response</h3>
-              <p className="text-gray-700 whitespace-pre-wrap">{complaint.adminResponse}</p>
+            <div className="border-t dark:border-dark-border pt-6 mt-6">
+              <h3 className="font-semibold text-gray-900 dark:text-dark-text mb-2">Admin Response</h3>
+              <p className="text-gray-700 dark:text-dark-muted whitespace-pre-wrap">{complaint.adminResponse}</p>
             </div>
           )}
         </div>
 
         {isAdmin && (
           <div className="card">
-            <h2 className="text-xl font-bold mb-4">Update Complaint Status</h2>
+            <h2 className="text-xl font-bold dark:text-dark-text mb-4">Update Complaint Status</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
                   Status
-                  <span className="ml-2 text-xs text-gray-500">(Current: {complaint.status.replace('_', ' ')})</span>
+                  <span className="ml-2 text-xs text-gray-500 dark:text-dark-muted">(Current: {complaint.status.replace('_', ' ')})</span>
                 </label>
                 <select value={status} onChange={(e) => setStatus(e.target.value)} className="input">
                   <option value="PENDING">Pending - Waiting for review</option>
                   <option value="IN_PROGRESS">In Progress - Working on it</option>
                   <option value="RESOLVED">Resolved - Issue fixed</option>
                 </select>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-dark-muted mt-1">
                   {status === 'PENDING' && 'Complaint received, awaiting action'}
                   {status === 'IN_PROGRESS' && 'Admin is actively working on this complaint'}
                   {status === 'RESOLVED' && 'Issue has been fixed and complaint is closed'}
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
                   Admin Response
-                  <span className="ml-1 text-red-500">*</span>
+                  <span className="ml-1 text-red-500 dark:text-red-400">*</span>
                 </label>
                 <textarea
                   value={response}

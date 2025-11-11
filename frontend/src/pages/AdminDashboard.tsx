@@ -5,6 +5,7 @@ import { complaintAPI, analyticsAPI } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
 import { LogOut, FileText, Clock, CheckCircle, AlertCircle } from 'lucide-react'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function AdminDashboard() {
   const [complaints, setComplaints] = useState<Complaint[]>([])
@@ -35,22 +36,27 @@ export default function AdminDashboard() {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      PENDING: 'bg-yellow-100 text-yellow-800 border border-yellow-300',
-      IN_PROGRESS: 'bg-blue-100 text-blue-800 border border-blue-300',
-      RESOLVED: 'bg-green-100 text-green-800 border border-green-300'
+      PENDING: 'bg-yellow-100 text-yellow-800 border border-yellow-300 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-700/30',
+      IN_PROGRESS: 'bg-blue-100 text-blue-800 border border-blue-300 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700/30',
+      RESOLVED: 'bg-green-100 text-green-800 border border-green-300 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700/30'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800 border border-gray-300'
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800 border border-gray-300 dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-700/30'
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border shadow-sm dark:shadow-dark-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-sm text-gray-600">Manage and resolve complaints</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-dark-text">Admin Dashboard</h1>
+              <p className="text-sm text-gray-600 dark:text-dark-muted">Manage and resolve complaints</p>
             </div>
             <button onClick={logout} className="btn-secondary flex items-center gap-2">
               <LogOut className="w-4 h-4" />
@@ -67,37 +73,37 @@ export default function AdminDashboard() {
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Total</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.totalComplaints}</p>
+                  <p className="text-sm text-gray-600 dark:text-dark-muted">Total</p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-dark-text">{stats.totalComplaints}</p>
                 </div>
-                <FileText className="w-10 h-10 text-primary-600" />
+                <FileText className="w-10 h-10 text-primary-600 dark:text-purple-400" />
               </div>
             </div>
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Pending</p>
-                  <p className="text-3xl font-bold text-yellow-600">{stats.pendingComplaints}</p>
+                  <p className="text-sm text-gray-600 dark:text-dark-muted">Pending</p>
+                  <p className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pendingComplaints}</p>
                 </div>
-                <Clock className="w-10 h-10 text-yellow-600" />
+                <Clock className="w-10 h-10 text-yellow-600 dark:text-yellow-400" />
               </div>
             </div>
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">In Progress</p>
-                  <p className="text-3xl font-bold text-blue-600">{stats.inProgressComplaints}</p>
+                  <p className="text-sm text-gray-600 dark:text-dark-muted">In Progress</p>
+                  <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.inProgressComplaints}</p>
                 </div>
-                <AlertCircle className="w-10 h-10 text-blue-600" />
+                <AlertCircle className="w-10 h-10 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Resolved</p>
-                  <p className="text-3xl font-bold text-green-600">{stats.resolvedComplaints}</p>
+                  <p className="text-sm text-gray-600 dark:text-dark-muted">Resolved</p>
+                  <p className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.resolvedComplaints}</p>
                 </div>
-                <CheckCircle className="w-10 h-10 text-green-600" />
+                <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
               </div>
             </div>
           </div>
@@ -105,7 +111,7 @@ export default function AdminDashboard() {
 
         {/* Filters */}
         <div className="flex items-center gap-4 mb-6">
-          <h2 className="text-xl font-bold text-gray-900">All Complaints</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-dark-text">All Complaints</h2>
           <select 
             value={filter} 
             onChange={(e) => setFilter(e.target.value)}
@@ -121,47 +127,47 @@ export default function AdminDashboard() {
         {/* Complaints Table */}
         {loading ? (
           <div className="card text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 dark:border-purple-400 mx-auto"></div>
           </div>
         ) : (
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-dark-border">
+                <thead className="bg-gray-50 dark:bg-dark-300">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Title</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Student</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Action</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white dark:bg-dark-card divide-y divide-gray-200 dark:divide-dark-border">
                   {complaints.map((complaint) => (
-                    <tr key={complaint.id} className="hover:bg-gray-50">
+                    <tr key={complaint.id} className="hover:bg-gray-50 dark:hover:bg-dark-300 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{complaint.title}</div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-dark-text">{complaint.title}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{complaint.student.name}</div>
-                        <div className="text-xs text-gray-500">{complaint.student.email}</div>
+                        <div className="text-sm text-gray-900 dark:text-dark-text">{complaint.student.name}</div>
+                        <div className="text-xs text-gray-500 dark:text-dark-muted">{complaint.student.email}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 text-xs bg-gray-100 rounded">{complaint.category}</span>
+                        <span className="px-2 py-1 text-xs bg-gray-100 dark:bg-dark-300 dark:text-dark-text rounded">{complaint.category}</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(complaint.status)}`}>
                           {complaint.status.replace('_', ' ')}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-dark-muted">
                         {new Date(complaint.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <button 
                           onClick={() => navigate(`/complaints/${complaint.id}`)}
-                          className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+                          className="text-primary-600 dark:text-purple-400 hover:text-primary-700 dark:hover:text-purple-300 text-sm font-medium transition-colors"
                         >
                           View Details
                         </button>
