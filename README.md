@@ -81,6 +81,26 @@ BrotoDesk/
 
 ## 🚀 Getting Started
 
+### Option 1: Local Setup with Docker (Recommended - No Supabase!)
+
+```powershell
+# One-time setup
+.\start-dev.ps1
+
+# Start all services
+.\start-all.ps1
+```
+
+Visit: **http://localhost:5173** 🎉
+
+See [QUICK_START.md](./QUICK_START.md) for complete local setup guide.
+
+### Option 2: With Supabase
+
+Follow the detailed guide in [START_HERE.md](./START_HERE.md) for cloud database setup.
+
+---
+
 ### Prerequisites
 - **Node.js** v18 or higher
 - **PostgreSQL** database (local or cloud like Supabase)
