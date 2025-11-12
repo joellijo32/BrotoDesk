@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { complaintAPI } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
-import { Plus, LogOut, Bell, FileText, Clock, CheckCircle, Upload, X } from 'lucide-react'
+import { Plus, LogOut, Bell, FileText, Clock, CheckCircle, AlertCircle, TrendingUp, Calendar, ArrowRight, Filter, Upload, X, Search } from 'lucide-react'
 import ThemeToggle from '../components/ThemeToggle'
 
 export default function StudentDashboard() {
   const [complaints, setComplaints] = useState<Complaint[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<string>('ALL')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notificationRef = useRef<HTMLDivElement>(null)
   const { user, logout, isAdmin } = useAuth()
   const navigate = useNavigate()
 
@@ -22,6 +26,23 @@ export default function StudentDashboard() {
     fetchComplaints()
   }, [])
 
+  // Close notifications when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setShowNotifications(false)
+      }
+    }
+
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showNotifications])
+
   const fetchComplaints = async () => {
     try {
       const { data } = await complaintAPI.getAll()
@@ -32,6 +53,8 @@ export default function StudentDashboard() {
       setLoading(false)
     }
   }
+
+
 
   const getStatusColor = (status: string) => {
     const colors = {
@@ -45,26 +68,105 @@ export default function StudentDashboard() {
   const stats = {
     total: complaints.length,
     pending: complaints.filter(c => c.status === 'PENDING').length,
+    inProgress: complaints.filter(c => c.status === 'IN_PROGRESS').length,
     resolved: complaints.filter(c => c.status === 'RESOLVED').length
   }
 
+  const getRecentComplaints = () => {
+    return [...complaints]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 5)
+  }
+
+  const getPendingComplaints = () => {
+    return complaints.filter(c => c.status === 'PENDING').slice(0, 3)
+  }
+
+  const filteredComplaints = statusFilter === 'ALL' 
+    ? complaints 
+    : complaints.filter(c => c.status === statusFilter)
+
+  // Apply search filter
+  const searchFilteredComplaints = filteredComplaints.filter(c => {
+    if (!searchQuery) return true
+    const searchLower = searchQuery.toLowerCase()
+    return c.title.toLowerCase().includes(searchLower) || 
+           c.description.toLowerCase().includes(searchLower) ||
+           c.category.toLowerCase().includes(searchLower)
+  })
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black">
-      {/* Header */}
-      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-lg dark:shadow-black/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {/* Compact Header - Matching Admin */}
+      <header className="sticky top-0 z-10 bg-white dark:bg-dark-card border-b-2 border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-2xl dark:shadow-black/50">
+        <div className="max-w-[1600px] mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">BrotoDesk</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Welcome back, {user?.name}</p>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">My Complaints</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Track and manage your submissions</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <ThemeToggle />
-              <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              </button>
-              <button onClick={logout} className="btn-secondary flex items-center gap-2">
-                <LogOut className="w-4 h-4" />
+              <div className="relative" ref={notificationRef}>
+                <button 
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors relative"
+                >
+                  <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  {stats.pending > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {stats.pending}
+                    </span>
+                  )}
+                </button>
+                
+                {/* Notifications Dropdown */}
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-dark-card border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl dark:shadow-2xl dark:shadow-black/50 z-50">
+                    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                      <h3 className="font-bold text-gray-900 dark:text-white">Notifications</h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Your complaint updates</p>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {getPendingComplaints().length > 0 ? (
+                        <div className="p-3 space-y-2">
+                          {getPendingComplaints().map((complaint) => (
+                            <button
+                              key={complaint.id}
+                              onClick={() => {
+                                navigate(`/complaints/${complaint.id}`)
+                                setShowNotifications(false)
+                              }}
+                              className="w-full p-3 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800/30 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all text-left"
+                            >
+                              <div className="flex items-start gap-2">
+                                <Clock className="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                    {complaint.title}
+                                  </p>
+                                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                    Pending review
+                                  </p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                                    {new Date(complaint.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                  </p>
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="p-8 text-center">
+                          <Bell className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-3" />
+                          <p className="text-sm text-gray-500 dark:text-gray-400">No pending notifications</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <button onClick={logout} className="btn-secondary text-sm px-4 py-2">
                 Logout
               </button>
             </div>
@@ -72,96 +174,298 @@ export default function StudentDashboard() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="card">
-            <div className="flex items-center justify-between">
+      <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
+        {/* Enhanced Stats Cards - Matching Admin */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="card bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-l-4 border-yellow-500 hover:scale-105 transition-transform shadow-lg">
+            <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Total Complaints</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Pending</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.pending}</p>
               </div>
-              <FileText className="w-10 h-10 text-primary-500" />
+              <div className="p-3 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-xl">
+                <Clock className="w-7 h-7 text-yellow-600 dark:text-yellow-400" />
+              </div>
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Awaiting review
             </div>
           </div>
-          <div className="card">
-            <div className="flex items-center justify-between">
+
+          <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-l-4 border-blue-500 hover:scale-105 transition-transform shadow-lg">
+            <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Pending</p>
-                <p className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pending}</p>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">In Progress</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.inProgress}</p>
               </div>
-              <Clock className="w-10 h-10 text-yellow-600 dark:text-yellow-400" />
+              <div className="p-3 bg-blue-500/20 dark:bg-blue-500/10 rounded-xl">
+                <TrendingUp className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Being addressed
             </div>
           </div>
-          <div className="card">
-            <div className="flex items-center justify-between">
+
+          <div className="card bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-l-4 border-green-500 hover:scale-105 transition-transform shadow-lg">
+            <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Resolved</p>
-                <p className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.resolved}</p>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Resolved</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.resolved}</p>
               </div>
-              <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
+              <div className="p-3 bg-green-500/20 dark:bg-green-500/10 rounded-xl">
+                <CheckCircle className="w-7 h-7 text-green-600 dark:text-green-400" />
+              </div>
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {stats.total > 0 ? Math.round((stats.resolved / stats.total) * 100) : 0}% completion rate
+            </div>
+          </div>
+
+          <div className="card bg-gradient-to-br from-primary-50 to-red-50 dark:from-primary-900/20 dark:to-red-900/20 border-l-4 border-primary-500 hover:scale-105 transition-transform shadow-lg">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Total</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.total}</p>
+              </div>
+              <div className="p-3 bg-primary-500/20 dark:bg-primary-500/10 rounded-xl">
+                <FileText className="w-7 h-7 text-primary-600 dark:text-primary-400" />
+              </div>
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              All submissions
             </div>
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">My Complaints</h2>
-          <button 
-            onClick={() => setShowModal(true)}
-            className="btn-primary flex items-center gap-2"
-          >
-            <Plus className="w-5 h-5" />
-            New Complaint
-          </button>
-        </div>
-
-        {/* Complaints List */}
-        {loading ? (
-          <div className="card text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
-          </div>
-        ) : complaints.length === 0 ? (
-          <div className="card text-center py-12">
-            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">No complaints yet</p>
-            <button 
-              onClick={() => setShowModal(true)}
-              className="btn-primary mt-4"
-            >
-              Create your first complaint
-            </button>
-          </div>
-        ) : (
+        {/* 3-Column Layout - Matching Admin Dashboard */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Sidebar - Quick Actions */}
           <div className="space-y-4">
-            {complaints.map((complaint) => (
-              <div 
-                key={complaint.id}
-                onClick={() => navigate(`/complaints/${complaint.id}`)}
-                className="card hover:shadow-lg dark:hover:shadow-red-glow/30 transition-all cursor-pointer border-2 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">{complaint.title}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(complaint.status)}`}>
+            {/* Create Complaint Button */}
+            <button
+              onClick={() => setShowModal(true)}
+              className="w-full card bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-600 dark:to-primary-700 border-0 text-white hover:shadow-xl hover:scale-105 transition-all p-6"
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <Plus className="w-6 h-6" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-bold text-lg">New Complaint</h3>
+                  <p className="text-sm text-white/80">Submit an issue</p>
+                </div>
+              </div>
+            </button>
+
+            {/* Quick Filters */}
+            <div className="card">
+              <div className="flex items-center gap-2 mb-4">
+                <Filter className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <h3 className="font-bold text-sm text-gray-900 dark:text-white">Quick Filters</h3>
+              </div>
+              <div className="space-y-2">
+                <button
+                  onClick={() => setStatusFilter('ALL')}
+                  className={`w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left ${
+                    statusFilter === 'ALL'
+                      ? 'bg-primary-500 text-white shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  All Complaints
+                </button>
+                <button
+                  onClick={() => setStatusFilter('PENDING')}
+                  className={`w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left ${
+                    statusFilter === 'PENDING'
+                      ? 'bg-yellow-500 text-white shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  Pending
+                </button>
+                <button
+                  onClick={() => setStatusFilter('IN_PROGRESS')}
+                  className={`w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left ${
+                    statusFilter === 'IN_PROGRESS'
+                      ? 'bg-blue-500 text-white shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  In Progress
+                </button>
+                <button
+                  onClick={() => setStatusFilter('RESOLVED')}
+                  className={`w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left ${
+                    statusFilter === 'RESOLVED'
+                      ? 'bg-green-500 text-white shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  Resolved
+                </button>
+              </div>
+            </div>
+
+            {/* Pending Attention - if any */}
+            {getPendingComplaints().length > 0 && (
+              <div className="card border-2 border-yellow-200 dark:border-yellow-800/30 bg-yellow-50 dark:bg-yellow-900/10">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                  <h3 className="font-bold text-sm text-gray-900 dark:text-white">Pending Review</h3>
+                </div>
+                <div className="space-y-2">
+                  {getPendingComplaints().map((complaint) => (
+                    <button
+                      key={complaint.id}
+                      onClick={() => navigate(`/complaints/${complaint.id}`)}
+                      className="w-full p-2.5 bg-white dark:bg-gray-800 rounded-lg text-left hover:shadow-md transition-all border border-gray-200 dark:border-gray-700"
+                    >
+                      <p className="text-xs font-medium text-gray-900 dark:text-white truncate mb-1">
+                        {complaint.title}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {new Date(complaint.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Recent Activity */}
+            <div className="card">
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <h3 className="font-bold text-sm text-gray-900 dark:text-white">Recent Activity</h3>
+              </div>
+              <div className="space-y-2">
+                {getRecentComplaints().slice(0, 3).map((complaint) => (
+                  <button
+                    key={complaint.id}
+                    onClick={() => navigate(`/complaints/${complaint.id}`)}
+                    className="w-full p-2.5 bg-gray-50 dark:bg-gray-800 rounded-lg text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="text-xs font-medium text-gray-900 dark:text-white truncate flex-1">
+                        {complaint.title}
+                      </p>
+                      <span className={`px-1.5 py-0.5 rounded text-xs font-medium flex-shrink-0 ${getStatusColor(complaint.status)}`}>
                         {complaint.status.replace('_', ' ')}
                       </span>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-3">{complaint.description}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-                      <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded">{complaint.category}</span>
-                      <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
-                    </div>
-                  </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {new Date(complaint.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </p>
+                  </button>
+                ))}
+                {getRecentComplaints().length === 0 && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 text-center py-2">
+                    No recent activity
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Content - Complaints List */}
+          <div className="lg:col-span-2">
+            <div className="card">
+              <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-primary-500" />
+                  {statusFilter === 'ALL' ? 'All' : statusFilter.replace('_', ' ')} Complaints
+                  <span className="ml-2 px-2.5 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-lg text-sm font-semibold">
+                    {searchFilteredComplaints.length}
+                  </span>
+                </h3>
+                
+                {/* Search Bar */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search complaints..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white dark:bg-gray-900/30 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  />
                 </div>
               </div>
-            ))}
+
+              {/* Complaints List */}
+              {loading ? (
+                <div className="text-center py-16">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
+                  <p className="text-gray-500 dark:text-gray-400 mt-4">Loading...</p>
+                </div>
+              ) : searchFilteredComplaints.length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                    <FileText className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 dark:text-white mb-2">
+                    {searchQuery ? 'No matching complaints' : statusFilter === 'ALL' ? 'No complaints yet' : `No ${statusFilter.toLowerCase().replace('_', ' ')} complaints`}
+                  </h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    {searchQuery 
+                      ? 'Try adjusting your search terms.'
+                      : statusFilter === 'ALL' 
+                        ? 'Create your first complaint to get started.'
+                        : 'Try a different filter to see more complaints.'}
+                  </p>
+                  {statusFilter === 'ALL' && !searchQuery && (
+                    <button onClick={() => setShowModal(true)} className="btn-primary">
+                      <Plus className="w-4 h-4 mr-2 inline" />
+                      New Complaint
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+                  {searchFilteredComplaints.map((complaint) => (
+                    <div
+                      key={complaint.id}
+                      onClick={() => navigate(`/complaints/${complaint.id}`)}
+                      className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 hover:shadow-lg dark:hover:shadow-red-glow/30 transition-all cursor-pointer group bg-white dark:bg-gray-900/30"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-500 transition-colors truncate">
+                              {complaint.title}
+                            </h4>
+                            <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ${getStatusColor(complaint.status)}`}>
+                              {complaint.status.replace('_', ' ')}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">
+                            {complaint.description}
+                          </p>
+                          <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                            <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded font-medium">
+                              {complaint.category}
+                            </span>
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-3.5 h-3.5" />
+                              <span>{new Date(complaint.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <ArrowRight className="w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </main>
 
-      {/* Create Complaint Modal */}
       {showModal && (
         <CreateComplaintModal 
           onClose={() => setShowModal(false)}
