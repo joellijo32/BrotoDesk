@@ -423,7 +423,7 @@ export default function StudentDashboard() {
                   )}
                 </div>
               ) : (
-                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+                <div className="space-y-3 max-h-[850px] overflow-y-auto pr-2 custom-scrollbar">
                   {searchFilteredComplaints.map((complaint) => (
                     <div
                       key={complaint.id}
