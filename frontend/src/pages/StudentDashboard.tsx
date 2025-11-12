@@ -49,14 +49,14 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
+    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black">
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 
       {/* Header */}
-      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-800 shadow-sm">
+      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-lg dark:shadow-black/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -142,7 +142,7 @@ export default function StudentDashboard() {
               <div 
                 key={complaint.id}
                 onClick={() => navigate(`/complaints/${complaint.id}`)}
-                className="card hover:shadow-md dark:hover:shadow-red-glow transition-shadow cursor-pointer"
+                className="card hover:shadow-lg dark:hover:shadow-red-glow/30 transition-all cursor-pointer border-2 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -258,7 +258,7 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-dark-card rounded-xl max-w-2xl w-full p-6 border dark:border-gray-800 shadow-2xl">
+      <div className="bg-white dark:bg-dark-card rounded-xl max-w-2xl w-full p-6 border-2 border-gray-200 dark:border-gray-700 shadow-2xl dark:shadow-2xl dark:shadow-black/50">
         <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">New Complaint</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

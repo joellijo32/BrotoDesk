@@ -40,7 +40,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center px-4 py-12 transition-colors duration-500">
+    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-black dark:via-gray-950 dark:to-black flex items-center justify-center px-4 py-12 transition-colors duration-500">
       {/* Theme Toggle - Floating */}
       <div className="fixed top-6 right-6 z-50">
         <ThemeToggle />
@@ -105,7 +105,7 @@ export default function Login() {
 
         {/* Right Side - Login Form */}
         <div className="w-full">
-          <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-dark-border">
+          <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl dark:shadow-2xl dark:shadow-black/50 p-8 border border-gray-200 dark:border-gray-700">
             <div className="mb-8">
               <div className="flex items-center justify-center lg:justify-start mb-6">
                 <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg dark:shadow-red-glow">

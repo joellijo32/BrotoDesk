@@ -44,14 +44,14 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black">
+    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black">
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 
       {/* Header */}
-      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-800 shadow-sm">
+      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-lg dark:shadow-black/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -132,8 +132,8 @@ export default function AdminDashboard() {
         ) : (
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-                <thead className="bg-gray-50 dark:bg-dark-card">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-dark-card border-b dark:border-gray-700">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Title</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Student</th>
@@ -143,9 +143,9 @@ export default function AdminDashboard() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Action</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white dark:bg-dark-card divide-y divide-gray-200 dark:divide-gray-800">
+                <tbody className="bg-white dark:bg-dark-card divide-y divide-gray-200 dark:divide-gray-700">
                   {complaints.map((complaint) => (
-                    <tr key={complaint.id} className="hover:bg-gray-50 dark:hover:bg-black/50 transition-colors">
+                    <tr key={complaint.id} className="hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors border-b dark:border-gray-800/50 last:border-0">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">{complaint.title}</div>
                       </td>

@@ -40,7 +40,7 @@
   }
   
   .dark .btn-secondary {
-    @apply bg-dark-card text-white hover:bg-gray-800 border border-dark-border;
+    @apply bg-dark-card text-white hover:bg-gray-800 border border-gray-700 shadow-md shadow-black/30;
   }
   
   /* Inputs */
@@ -49,7 +49,7 @@
   }
   
   .dark .input {
-    @apply bg-dark-card border-dark-border text-white placeholder-dark-muted focus:ring-primary-500;
+    @apply bg-dark-card border-gray-700 text-white placeholder-gray-500 focus:ring-primary-500 shadow-inner shadow-black/20;
   }
   
   /* Cards */
@@ -58,7 +58,7 @@
   }
   
   .dark .card {
-    @apply bg-dark-card border-dark-border shadow-xl;
+    @apply bg-dark-card border-gray-700 shadow-2xl shadow-black/50;
   }
   
   /* Status Badges */
