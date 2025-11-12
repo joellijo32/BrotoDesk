@@ -49,23 +49,23 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 
       {/* Header */}
-      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border shadow-sm dark:shadow-dark-xl">
+      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-dark-text">BrotoDesk</h1>
-              <p className="text-sm text-gray-600 dark:text-dark-muted">Welcome back, {user?.name}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">BrotoDesk</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Welcome back, {user?.name}</p>
             </div>
             <div className="flex items-center gap-4">
-              <button className="p-2 hover:bg-gray-100 dark:hover:bg-dark-300 rounded-lg transition-colors">
-                <Bell className="w-5 h-5 text-gray-600 dark:text-dark-muted" />
+              <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               </button>
               <button onClick={logout} className="btn-secondary flex items-center gap-2">
                 <LogOut className="w-4 h-4" />
@@ -82,16 +82,16 @@ export default function StudentDashboard() {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-dark-muted">Total Complaints</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-dark-text">{stats.total}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Total Complaints</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
               </div>
-              <FileText className="w-10 h-10 text-primary-600 dark:text-purple-400" />
+              <FileText className="w-10 h-10 text-primary-500" />
             </div>
           </div>
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-dark-muted">Pending</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Pending</p>
                 <p className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pending}</p>
               </div>
               <Clock className="w-10 h-10 text-yellow-600 dark:text-yellow-400" />
@@ -100,7 +100,7 @@ export default function StudentDashboard() {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 dark:text-dark-muted">Resolved</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Resolved</p>
                 <p className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.resolved}</p>
               </div>
               <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
@@ -110,7 +110,7 @@ export default function StudentDashboard() {
 
         {/* Actions */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-dark-text">My Complaints</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">My Complaints</h2>
           <button 
             onClick={() => setShowModal(true)}
             className="btn-primary flex items-center gap-2"
@@ -123,12 +123,12 @@ export default function StudentDashboard() {
         {/* Complaints List */}
         {loading ? (
           <div className="card text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 dark:border-purple-400 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
           </div>
         ) : complaints.length === 0 ? (
           <div className="card text-center py-12">
-            <FileText className="w-12 h-12 text-gray-400 dark:text-dark-muted mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-dark-muted">No complaints yet</p>
+            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">No complaints yet</p>
             <button 
               onClick={() => setShowModal(true)}
               className="btn-primary mt-4"
@@ -142,19 +142,19 @@ export default function StudentDashboard() {
               <div 
                 key={complaint.id}
                 onClick={() => navigate(`/complaints/${complaint.id}`)}
-                className="card hover:shadow-md dark:hover:shadow-glow transition-shadow cursor-pointer"
+                className="card hover:shadow-md dark:hover:shadow-red-glow transition-shadow cursor-pointer"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-gray-900 dark:text-dark-text">{complaint.title}</h3>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{complaint.title}</h3>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(complaint.status)}`}>
                         {complaint.status.replace('_', ' ')}
                       </span>
                     </div>
-                    <p className="text-gray-600 dark:text-dark-muted text-sm line-clamp-2 mb-3">{complaint.description}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-dark-muted">
-                      <span className="px-2 py-1 bg-gray-100 dark:bg-dark-300 dark:text-dark-text rounded">{complaint.category}</span>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-3">{complaint.description}</p>
+                    <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                      <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded">{complaint.category}</span>
                       <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
                     </div>
                   </div>
@@ -258,13 +258,13 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-dark-card rounded-xl max-w-2xl w-full p-6 border dark:border-dark-border shadow-2xl dark:shadow-dark-xl">
-        <h2 className="text-2xl font-bold mb-6 dark:text-dark-text">New Complaint</h2>
+      <div className="bg-white dark:bg-dark-card rounded-xl max-w-2xl w-full p-6 border dark:border-gray-800 shadow-2xl">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">New Complaint</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Title
-              <span className={`ml-2 text-xs ${title.length >= 5 ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-dark-muted'}`}>
+              <span className={`ml-2 text-xs ${title.length >= 5 ? 'text-green-600 dark:text-green-400' : 'text-gray-400'}`}>
                 ({title.length}/5 min)
               </span>
             </label>
@@ -279,7 +279,7 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">Category</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">Category</label>
             <select value={category} onChange={(e) => setCategory(e.target.value)} className="input">
               {categories.map(cat => (
                 <option key={cat} value={cat}>{cat.replace('_', ' ')}</option>
@@ -287,9 +287,9 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
               Description
-              <span className={`ml-2 text-xs ${description.length >= 10 ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-dark-muted'}`}>
+              <span className={`ml-2 text-xs ${description.length >= 10 ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-400'}`}>
                 ({description.length}/10 min)
               </span>
             </label>
@@ -306,9 +306,9 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
           
           {/* Photo Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
               Photo Evidence (Optional)
-              <span className="ml-2 text-xs text-gray-500 dark:text-dark-muted">Max 5MB - JPEG, PNG, GIF, WebP</span>
+              <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">Max 5MB - JPEG, PNG, GIF, WebP</span>
             </label>
             
             {photoPreview ? (
@@ -316,7 +316,7 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
                 <img 
                   src={photoPreview} 
                   alt="Preview" 
-                  className="w-full h-48 object-cover rounded-lg border-2 border-gray-300 dark:border-dark-border"
+                  className="w-full h-48 object-cover rounded-lg border-2 border-gray-300 dark:border-gray-800"
                 />
                 <button
                   type="button"
@@ -327,13 +327,13 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
                 </button>
               </div>
             ) : (
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 dark:border-dark-border border-dashed rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-dark-300 transition-colors">
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 dark:border-gray-800 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-dark-300 transition-colors">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <Upload className="w-10 h-10 mb-2 text-gray-400 dark:text-dark-muted" />
-                  <p className="text-sm text-gray-500 dark:text-dark-muted">
+                  <Upload className="w-10 h-10 mb-2 text-gray-400 dark:text-gray-400" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     <span className="font-semibold">Click to upload</span> or drag and drop
                   </p>
-                  <p className="text-xs text-gray-400 dark:text-dark-muted">PNG, JPG, GIF, WebP (MAX. 5MB)</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-400">PNG, JPG, GIF, WebP (MAX. 5MB)</p>
                 </div>
                 <input
                   type="file"

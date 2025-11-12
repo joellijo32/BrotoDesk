@@ -44,19 +44,19 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 
       {/* Header */}
-      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border shadow-sm dark:shadow-dark-xl">
+      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-dark-text">Admin Dashboard</h1>
-              <p className="text-sm text-gray-600 dark:text-dark-muted">Manage and resolve complaints</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Manage and resolve complaints</p>
             </div>
             <button onClick={logout} className="btn-secondary flex items-center gap-2">
               <LogOut className="w-4 h-4" />
@@ -73,16 +73,16 @@ export default function AdminDashboard() {
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-dark-muted">Total</p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-dark-text">{stats.totalComplaints}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Total</p>
+                  <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalComplaints}</p>
                 </div>
-                <FileText className="w-10 h-10 text-primary-600 dark:text-purple-400" />
+                <FileText className="w-10 h-10 text-primary-500" />
               </div>
             </div>
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-dark-muted">Pending</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Pending</p>
                   <p className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pendingComplaints}</p>
                 </div>
                 <Clock className="w-10 h-10 text-yellow-600 dark:text-yellow-400" />
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-dark-muted">In Progress</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">In Progress</p>
                   <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.inProgressComplaints}</p>
                 </div>
                 <AlertCircle className="w-10 h-10 text-blue-600 dark:text-blue-400" />
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
             <div className="card">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-dark-muted">Resolved</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Resolved</p>
                   <p className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.resolvedComplaints}</p>
                 </div>
                 <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
@@ -111,7 +111,7 @@ export default function AdminDashboard() {
 
         {/* Filters */}
         <div className="flex items-center gap-4 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-dark-text">All Complaints</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">All Complaints</h2>
           <select 
             value={filter} 
             onChange={(e) => setFilter(e.target.value)}
@@ -127,47 +127,47 @@ export default function AdminDashboard() {
         {/* Complaints Table */}
         {loading ? (
           <div className="card text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 dark:border-purple-400 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
           </div>
         ) : (
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-dark-border">
-                <thead className="bg-gray-50 dark:bg-dark-300">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                <thead className="bg-gray-50 dark:bg-dark-card">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Title</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Student</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-dark-muted uppercase">Action</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Title</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Student</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Action</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white dark:bg-dark-card divide-y divide-gray-200 dark:divide-dark-border">
+                <tbody className="bg-white dark:bg-dark-card divide-y divide-gray-200 dark:divide-gray-800">
                   {complaints.map((complaint) => (
-                    <tr key={complaint.id} className="hover:bg-gray-50 dark:hover:bg-dark-300 transition-colors">
+                    <tr key={complaint.id} className="hover:bg-gray-50 dark:hover:bg-black/50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900 dark:text-dark-text">{complaint.title}</div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-white">{complaint.title}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900 dark:text-dark-text">{complaint.student.name}</div>
-                        <div className="text-xs text-gray-500 dark:text-dark-muted">{complaint.student.email}</div>
+                        <div className="text-sm text-gray-900 dark:text-white">{complaint.student.name}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{complaint.student.email}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 text-xs bg-gray-100 dark:bg-dark-300 dark:text-dark-text rounded">{complaint.category}</span>
+                        <span className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded">{complaint.category}</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(complaint.status)}`}>
                           {complaint.status.replace('_', ' ')}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-dark-muted">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {new Date(complaint.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <button 
                           onClick={() => navigate(`/complaints/${complaint.id}`)}
-                          className="text-primary-600 dark:text-purple-400 hover:text-primary-700 dark:hover:text-purple-300 text-sm font-medium transition-colors"
+                          className="text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-500 text-sm font-medium transition-colors"
                         >
                           View Details
                         </button>

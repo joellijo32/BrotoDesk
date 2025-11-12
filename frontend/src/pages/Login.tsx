@@ -40,64 +40,64 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-dark-bg dark:via-dark-300 dark:to-dark-200 flex items-center justify-center px-4 py-12 transition-colors duration-500">
+    <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center px-4 py-12 transition-colors duration-500">
       {/* Theme Toggle - Floating */}
       <div className="fixed top-6 right-6 z-50">
         <ThemeToggle />
       </div>
       
-      <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
+      <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
         
         {/* Left Side - Branding */}
-        <div className="hidden lg:flex flex-col justify-center space-y-6 px-8">
+        <div className="hidden lg:flex flex-col justify-center space-y-8 px-8">
           <div className="space-y-4">
             <div className="inline-block">
-              <span className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              <span className="text-5xl font-bold text-primary-500 dark:text-primary-500">
                 BrotoDesk
               </span>
             </div>
-            <h2 className="text-3xl font-semibold text-gray-800 dark:text-dark-text">
+            <h2 className="text-3xl font-semibold text-gray-900 dark:text-white">
               Complaint Management System
             </h2>
-            <p className="text-lg text-gray-600 dark:text-dark-muted">
+            <p className="text-lg text-gray-600 dark:text-gray-400">
               A streamlined platform for Brototype students to raise and track complaints efficiently.
             </p>
           </div>
           
           <div className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-blue-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-start space-x-4">
+              <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-primary-600 dark:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800 dark:text-dark-text">Quick Resolution</h3>
-                <p className="text-sm text-gray-600 dark:text-dark-muted">Get your complaints addressed promptly by administrators</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Quick Resolution</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Get your complaints addressed promptly by administrators</p>
               </div>
             </div>
             
-            <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-start space-x-4">
+              <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-primary-600 dark:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800 dark:text-dark-text">Track Progress</h3>
-                <p className="text-sm text-gray-600 dark:text-dark-muted">Monitor your complaint status in real-time</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Track Progress</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Monitor your complaint status in real-time</p>
               </div>
             </div>
             
-            <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-start space-x-4">
+              <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-primary-600 dark:text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800 dark:text-dark-text">Secure & Private</h3>
-                <p className="text-sm text-gray-600 dark:text-dark-muted">Your data is protected with industry-standard security</p>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Secure & Private</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Your data is protected with industry-standard security</p>
               </div>
             </div>
           </div>
@@ -105,26 +105,26 @@ export default function Login() {
 
         {/* Right Side - Login Form */}
         <div className="w-full">
-          <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl dark:shadow-dark-xl p-8 border border-gray-100 dark:border-dark-border backdrop-blur-sm">
+          <div className="bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-dark-border">
             <div className="mb-8">
               <div className="flex items-center justify-center lg:justify-start mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 dark:from-purple-500 dark:to-pink-500 rounded-xl flex items-center justify-center shadow-lg dark:shadow-glow">
+                <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg dark:shadow-red-glow">
                   <LogIn className="w-6 h-6 text-white" />
                 </div>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-dark-text mb-2">Welcome Back</h1>
-              <p className="text-gray-600 dark:text-dark-muted">Sign in to access your dashboard</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h1>
+              <p className="text-gray-600 dark:text-gray-400">Sign in to access your dashboard</p>
             </div>
 
             {/* Sample Credentials Info */}
-            <div className="mb-6 p-4 bg-blue-50 dark:bg-purple-900/20 border border-blue-200 dark:border-purple-700/30 rounded-xl">
-              <div className="flex items-start space-x-2">
-                <AlertCircle className="w-5 h-5 text-blue-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 rounded-xl">
+              <div className="flex items-start space-x-3">
+                <AlertCircle className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
-                  <p className="font-semibold text-blue-900 dark:text-purple-300 mb-2">Test Credentials:</p>
-                  <div className="space-y-1 text-blue-800 dark:text-purple-200">
-                    <p><strong>Admin:</strong> admin@brototype.com / admin123</p>
-                    <p><strong>Student:</strong> student@brototype.com / student123</p>
+                  <p className="font-semibold text-gray-900 dark:text-white mb-2">Test Credentials:</p>
+                  <div className="space-y-1 text-gray-700 dark:text-gray-300">
+                    <p><strong className="text-gray-900 dark:text-white">Admin:</strong> admin@brototype.com / admin123</p>
+                    <p><strong className="text-gray-900 dark:text-white">Student:</strong> student@brototype.com / student123</p>
                   </div>
                 </div>
               </div>
@@ -132,19 +132,19 @@ export default function Login() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-gray-400 dark:text-dark-muted" />
+                    <Mail className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                   </div>
                   <input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-dark-border rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent transition-all outline-none text-gray-900 dark:text-dark-text dark:bg-dark-300"
+                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all outline-none text-gray-900 dark:text-white bg-white dark:bg-dark-card"
                     placeholder="you@example.com"
                     required
                   />
@@ -152,19 +152,19 @@ export default function Login() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-gray-400 dark:text-dark-muted" />
+                    <Lock className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                   </div>
                   <input
                     id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-dark-border rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-purple-500 focus:border-transparent transition-all outline-none text-gray-900 dark:text-dark-text dark:bg-dark-300"
+                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all outline-none text-gray-900 dark:text-white bg-white dark:bg-dark-card"
                     placeholder="••••••••"
                     required
                   />
@@ -174,7 +174,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 dark:from-purple-600 dark:to-pink-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 dark:hover:from-purple-700 dark:hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-purple-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/30 dark:shadow-purple-500/30 hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full bg-primary-500 hover:bg-primary-600 dark:bg-primary-500 dark:hover:bg-primary-600 text-white py-3 px-4 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary-500/30 dark:shadow-red-glow hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
@@ -191,9 +191,9 @@ export default function Login() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Don't have an account?{' '}
-                <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                <Link to="/register" className="font-semibold text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-500 transition-colors">
                   Create one now
                 </Link>
               </p>
@@ -202,7 +202,7 @@ export default function Login() {
 
           {/* Mobile Branding */}
           <div className="lg:hidden mt-8 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               © 2025 BrotoDesk. All rights reserved.
             </p>
           </div>

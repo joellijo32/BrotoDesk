@@ -7,7 +7,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative group p-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 hover:shadow-glow transition-all duration-300 hover:scale-110"
+      className="relative group p-2 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-500 dark:to-primary-600 hover:shadow-glow transition-all duration-300 hover:scale-110"
       aria-label="Toggle theme"
     >
       <div className="relative w-6 h-6">
@@ -31,7 +31,7 @@ export default function ThemeToggle() {
       </div>
       
       {/* Glow effect on hover */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-50 blur-xl transition-opacity duration-300"></div>
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 opacity-0 group-hover:opacity-50 blur-xl transition-opacity duration-300"></div>
     </button>
   )
 }
