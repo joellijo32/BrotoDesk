@@ -300,8 +300,8 @@ export default function AdminDashboard() {
           </div>
 
           {/* Right Column: All Complaints List */}
-          <div className="lg:col-span-2">
-            <div className="card">
+          <div className="lg:col-span-2 flex flex-col">
+            <div className="card flex flex-col flex-1">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-gray-900 dark:text-white">
                   All Complaints ({filteredComplaints.length})
@@ -331,8 +331,7 @@ export default function AdminDashboard() {
                   <p className="text-gray-500 dark:text-gray-400">No complaints found</p>
                 </div>
               ) : (
-                <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
-                  {filteredComplaints.map((complaint) => (
+                <div className="space-y-2 flex-1 overflow-y-auto pr-2 custom-scrollbar">{filteredComplaints.map((complaint) => (
                     <div
                       key={complaint.id}
                       onClick={() => navigate(`/complaints/${complaint.id}`)}
