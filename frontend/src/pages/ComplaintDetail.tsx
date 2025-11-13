@@ -4,8 +4,9 @@ import { useAuth } from '../context/AuthContext'
 import { complaintAPI } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
-import { ArrowLeft, User, Calendar, Tag, Image as ImageIcon } from 'lucide-react'
+import { ArrowLeft, User, Calendar, Tag, Image as ImageIcon, Download, Eye } from 'lucide-react'
 import ThemeToggle from '../components/ThemeToggle'
+import ImageViewer from '../components/ImageViewer'
 
 interface Attachment {
   id: string
@@ -24,6 +25,7 @@ export default function ComplaintDetail() {
   const [status, setStatus] = useState('')
   const [response, setResponse] = useState('')
   const [updating, setUpdating] = useState(false)
+  const [viewerImage, setViewerImage] = useState<string | null>(null)
   const { isAdmin } = useAuth()
   const navigate = useNavigate()
 
@@ -138,24 +140,71 @@ export default function ComplaintDetail() {
             <div className="border-t dark:border-gray-800 pt-6 mt-6">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <ImageIcon className="w-5 h-5" />
-                Photo Evidence
+                Photo Evidence ({attachments.length})
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {attachments.map((attachment) => (
-                  <div key={attachment.id} className="relative group">
-                    <img
-                      src={`http://localhost:5000/uploads/${attachment.fileKey}`}
-                      alt={attachment.fileName}
-                      className="w-full h-64 object-cover rounded-lg border-2 border-gray-200 dark:border-gray-800"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 dark:bg-opacity-70 text-white p-2 rounded-b-lg">
-                      <p className="text-sm truncate">{attachment.fileName}</p>
-                      <p className="text-xs text-gray-300 dark:text-gray-400">
-                        {(attachment.fileSize / 1024).toFixed(1)} KB
-                      </p>
+                {attachments.map((attachment) => {
+                  const imageUrl = `http://localhost:5000/uploads/${attachment.fileKey}`
+                  return (
+                    <div key={attachment.id} className="relative group overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all">
+                      <img
+                        src={imageUrl}
+                        alt={attachment.fileName}
+                        className="w-full h-64 object-cover cursor-pointer transition-transform group-hover:scale-105"
+                        onDoubleClick={() => setViewerImage(imageUrl)}
+                        title="Double-click to view full screen"
+                      />
+                      
+                      {/* Overlay with actions */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-auto">
+                          <p className="text-white font-medium text-sm truncate mb-2">{attachment.fileName}</p>
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs text-gray-300">
+                              {(attachment.fileSize / 1024).toFixed(1)} KB
+                            </p>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setViewerImage(imageUrl)
+                                }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-lg transition-colors text-sm font-medium"
+                              >
+                                <Eye className="w-4 h-4" />
+                                View
+                              </button>
+                              <button
+                                onClick={async (e) => {
+                                  e.stopPropagation()
+                                  try {
+                                    const response = await fetch(imageUrl)
+                                    const blob = await response.blob()
+                                    const url = window.URL.createObjectURL(blob)
+                                    const link = document.createElement('a')
+                                    link.href = url
+                                    link.download = attachment.fileName
+                                    document.body.appendChild(link)
+                                    link.click()
+                                    document.body.removeChild(link)
+                                    window.URL.revokeObjectURL(url)
+                                    toast.success('Image downloaded successfully')
+                                  } catch (error) {
+                                    toast.error('Download failed')
+                                  }
+                                }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors text-sm font-medium"
+                              >
+                                <Download className="w-4 h-4" />
+                                Download
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           )}
@@ -212,6 +261,15 @@ export default function ComplaintDetail() {
           </div>
         )}
       </div>
+
+      {/* Image Viewer Modal */}
+      {viewerImage && (
+        <ImageViewer
+          imageUrl={viewerImage}
+          altText={complaint?.title || 'Complaint Image'}
+          onClose={() => setViewerImage(null)}
+        />
+      )}
     </div>
   )
 }

@@ -8,7 +8,6 @@ import ThemeToggle from '../components/ThemeToggle'
 export default function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [studentId, setStudentId] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -31,7 +30,7 @@ export default function Register() {
     setLoading(true)
 
     try {
-      await register(name, email, password, studentId || undefined)
+      await register(name, email, password, undefined)
       toast.success('Registration successful! Please login.')
       navigate('/login')
     } catch (error: any) {
@@ -89,19 +88,6 @@ export default function Register() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Student ID (Optional)
-              </label>
-              <input
-                type="text"
-                value={studentId}
-                onChange={(e) => setStudentId(e.target.value)}
-                className="input"
-                placeholder="BRO123456"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <input
@@ -110,6 +96,10 @@ export default function Register() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="input"
                 placeholder="••••••••"
+                autoComplete="new-password"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
                 required
               />
             </div>
@@ -124,6 +114,10 @@ export default function Register() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="input"
                 placeholder="••••••••"
+                autoComplete="new-password"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
                 required
               />
             </div>

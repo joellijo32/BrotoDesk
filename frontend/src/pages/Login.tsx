@@ -166,6 +166,10 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="block w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all outline-none text-gray-900 dark:text-white bg-white dark:bg-dark-card"
                     placeholder="••••••••"
+                    autoComplete="current-password"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
                     required
                   />
                 </div>
