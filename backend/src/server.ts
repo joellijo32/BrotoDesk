@@ -16,7 +16,11 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:5173',
+    'https://brotoDesk.vercel.app', // Update with your actual Vercel URL
+    /\.vercel\.app$/ // Allow all Vercel preview deployments
+  ],
   credentials: true
 }));
 app.use(express.json());
