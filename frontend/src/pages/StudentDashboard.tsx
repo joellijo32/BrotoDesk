@@ -216,13 +216,13 @@ export default function StudentDashboard() {
     <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black">
       {/* Compact Header - Matching Admin */}
       <header className="sticky top-0 z-10 bg-white dark:bg-dark-card border-b-2 border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-2xl dark:shadow-black/50">
-        <div className="max-w-[1600px] mx-auto px-6 py-3">
-          <div className="flex items-center justify-between">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">My Complaints</h1>
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">My Complaints</h1>
               <p className="text-xs text-gray-600 dark:text-gray-400">Track and manage your submissions</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 justify-end">
               <ThemeToggle />
               <div className="relative" ref={notificationRef}>
                 <button 
@@ -246,7 +246,7 @@ export default function StudentDashboard() {
                 
                 {/* Notifications Dropdown */}
                 {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-96 bg-white dark:bg-dark-card border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl dark:shadow-2xl dark:shadow-black/50 z-50 overflow-hidden">
+                  <div className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-96 max-w-md bg-white dark:bg-dark-card border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl dark:shadow-2xl dark:shadow-black/50 z-50 overflow-hidden">
                     <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-primary-50 to-red-50 dark:from-primary-900/20 dark:to-red-900/20">
                       <div className="flex items-center justify-between">
                         <div>
@@ -323,7 +323,7 @@ export default function StudentDashboard() {
                   </div>
                 )}
               </div>
-              <button onClick={logout} className="btn-secondary text-sm px-4 py-2">
+              <button onClick={logout} className="btn-secondary text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2">
                 Logout
               </button>
             </div>
@@ -331,17 +331,17 @@ export default function StudentDashboard() {
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Enhanced Stats Cards - Matching Admin */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <div className="card bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-l-4 border-yellow-500 hover:scale-105 transition-transform shadow-lg">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
               <div>
                 <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Pending</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.pending}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.pending}</p>
               </div>
-              <div className="p-3 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-xl">
-                <Clock className="w-7 h-7 text-yellow-600 dark:text-yellow-400" />
+              <div className="p-2 sm:p-3 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-lg sm:rounded-xl">
+                <Clock className="w-5 h-5 sm:w-7 sm:h-7 text-yellow-600 dark:text-yellow-400" />
               </div>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -350,13 +350,13 @@ export default function StudentDashboard() {
           </div>
 
           <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-l-4 border-blue-500 hover:scale-105 transition-transform shadow-lg">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
               <div>
                 <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">In Progress</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.inProgress}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.inProgress}</p>
               </div>
-              <div className="p-3 bg-blue-500/20 dark:bg-blue-500/10 rounded-xl">
-                <TrendingUp className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+              <div className="p-2 sm:p-3 bg-blue-500/20 dark:bg-blue-500/10 rounded-lg sm:rounded-xl">
+                <TrendingUp className="w-5 h-5 sm:w-7 sm:h-7 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -365,13 +365,13 @@ export default function StudentDashboard() {
           </div>
 
           <div className="card bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-l-4 border-green-500 hover:scale-105 transition-transform shadow-lg">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
               <div>
                 <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Resolved</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.resolved}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.resolved}</p>
               </div>
-              <div className="p-3 bg-green-500/20 dark:bg-green-500/10 rounded-xl">
-                <CheckCircle className="w-7 h-7 text-green-600 dark:text-green-400" />
+              <div className="p-2 sm:p-3 bg-green-500/20 dark:bg-green-500/10 rounded-lg sm:rounded-xl">
+                <CheckCircle className="w-5 h-5 sm:w-7 sm:h-7 text-green-600 dark:text-green-400" />
               </div>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -380,13 +380,13 @@ export default function StudentDashboard() {
           </div>
 
           <div className="card bg-gradient-to-br from-primary-50 to-red-50 dark:from-primary-900/20 dark:to-red-900/20 border-l-4 border-primary-500 hover:scale-105 transition-transform shadow-lg">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
               <div>
                 <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Total</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.total}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mt-1">{stats.total}</p>
               </div>
-              <div className="p-3 bg-primary-500/20 dark:bg-primary-500/10 rounded-xl">
-                <FileText className="w-7 h-7 text-primary-600 dark:text-primary-400" />
+              <div className="p-2 sm:p-3 bg-primary-500/20 dark:bg-primary-500/10 rounded-lg sm:rounded-xl">
+                <FileText className="w-5 h-5 sm:w-7 sm:h-7 text-primary-600 dark:text-primary-400" />
               </div>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -396,9 +396,9 @@ export default function StudentDashboard() {
         </div>
 
         {/* 3-Column Layout - Matching Admin Dashboard */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Sidebar - Quick Actions */}
-          <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Left Sidebar - Quick Actions - Hidden on mobile, shown as floating button */}
+          <div className="hidden lg:block space-y-4">
             {/* Create Complaint Button */}
             <button
               onClick={() => setShowModal(true)}
@@ -529,24 +529,24 @@ export default function StudentDashboard() {
           {/* Right Content - Complaints List */}
           <div className="lg:col-span-2" data-complaints-list>
             <div className="card">
-              <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-primary-500" />
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2 text-sm sm:text-base">
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary-500" />
                   {statusFilter === 'ALL' ? 'All' : statusFilter.replace('_', ' ')} Complaints
-                  <span className="ml-2 px-2.5 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-lg text-sm font-semibold">
+                  <span className="ml-2 px-2 sm:px-2.5 py-0.5 sm:py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-lg text-xs sm:text-sm font-semibold">
                     {searchFilteredComplaints.length}
                   </span>
                 </h3>
                 
                 {/* Search Bar */}
-                <div className="relative">
+                <div className="relative w-full sm:w-auto">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search complaints..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white dark:bg-gray-900/30 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                    className="w-full sm:w-auto pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white dark:bg-gray-900/30 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                   />
                 </div>
               </div>
@@ -714,12 +714,12 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-dark-card rounded-xl max-w-2xl w-full p-6 border-2 border-gray-200 dark:border-gray-700 shadow-2xl dark:shadow-2xl dark:shadow-black/50">
-        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">New Complaint</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-50 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-white dark:bg-dark-card rounded-xl max-w-2xl w-full p-4 sm:p-6 my-8 border-2 border-gray-200 dark:border-gray-700 shadow-2xl dark:shadow-2xl dark:shadow-black/50">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white">New Complaint</h2>
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
               Title
               <span className={`ml-2 text-xs ${title.length >= 5 ? 'text-green-600 dark:text-green-400' : 'text-gray-400'}`}>
                 ({title.length}/5 min)
@@ -736,7 +736,7 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">Category</label>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-white mb-1.5 sm:mb-2">Category</label>
             <select value={category} onChange={(e) => setCategory(e.target.value)} className="input">
               {categories.map(cat => (
                 <option key={cat} value={cat}>{cat.replace('_', ' ')}</option>
@@ -763,7 +763,7 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
           
           {/* Photo Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-white mb-1.5 sm:mb-2">
               Photo Evidence (Optional)
               <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">Max 5MB - JPEG, PNG, GIF, WebP</span>
             </label>
@@ -802,12 +802,12 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
             )}
           </div>
           
-          <div className="flex gap-3">
-            <button type="button" onClick={onClose} className="btn-secondary flex-1">Cancel</button>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+            <button type="button" onClick={onClose} className="btn-secondary flex-1 text-sm sm:text-base py-2.5 sm:py-3">Cancel</button>
             <button 
               type="submit" 
               disabled={loading || title.length < 5 || description.length < 10} 
-              className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary flex-1 text-sm sm:text-base py-2.5 sm:py-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Creating...' : 'Create Complaint'}
             </button>
