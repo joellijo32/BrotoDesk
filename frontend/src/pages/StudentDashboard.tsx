@@ -623,6 +623,15 @@ export default function StudentDashboard() {
         </div>
       </main>
 
+      {/* Floating Action Button for Mobile */}
+      <button
+        onClick={() => setShowModal(true)}
+        className="lg:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary-500 hover:bg-primary-600 text-white rounded-full shadow-2xl hover:shadow-primary-500/50 flex items-center justify-center z-40 transition-all hover:scale-110 active:scale-95"
+        aria-label="Create new complaint"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
+
       {showModal && (
         <CreateComplaintModal 
           onClose={() => setShowModal(false)}
