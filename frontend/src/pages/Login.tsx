@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
-import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react'
+import { LogIn, Mail, Lock } from 'lucide-react'
 import ThemeToggle from '../components/ThemeToggle'
 
 export default function Login() {
@@ -114,20 +114,6 @@ export default function Login() {
               </div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h1>
               <p className="text-gray-600 dark:text-gray-400">Sign in to access your dashboard</p>
-            </div>
-
-            {/* Sample Credentials Info */}
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 rounded-xl">
-              <div className="flex items-start space-x-3">
-                <AlertCircle className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
-                <div className="text-sm">
-                  <p className="font-semibold text-gray-900 dark:text-white mb-2">Test Credentials:</p>
-                  <div className="space-y-1 text-gray-700 dark:text-gray-300">
-                    <p><strong className="text-gray-900 dark:text-white">Admin:</strong> admin@brototype.com / admin123</p>
-                    <p><strong className="text-gray-900 dark:text-white">Student:</strong> student@brototype.com / student123</p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">

@@ -23,10 +23,7 @@ const updateStatusSchema = z.object({
 // Create complaint (Student only)
 router.post('/', authenticate, async (req: AuthRequest, res, next) => {
   try {
-    console.log('Received complaint data:', req.body); // Debug log
     const data = createComplaintSchema.parse(req.body);
-    
-    console.log('Creating complaint with data:', data); // Debug log
     
     const complaint = await prisma.complaint.create({
       data: {
@@ -47,8 +44,6 @@ router.post('/', authenticate, async (req: AuthRequest, res, next) => {
         }
       }
     });
-    
-    console.log('Complaint created:', complaint); // Debug log
     
     // Create notification for admins
     const admins = await prisma.user.findMany({
@@ -71,10 +66,6 @@ router.post('/', authenticate, async (req: AuthRequest, res, next) => {
       complaint
     });
   } catch (error) {
-    console.error('Error creating complaint:', error); // Debug log
-    if (error instanceof z.ZodError) {
-      console.error('Validation error:', error.errors);
-    }
     next(error);
   }
 });
