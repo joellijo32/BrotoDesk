@@ -65,17 +65,17 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black">
       {/* Compact Header */}
       <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-lg dark:shadow-black/50 sticky top-0 z-40">
-        <div className="max-w-[1600px] mx-auto px-6 py-3">
-          <div className="flex items-center justify-between">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-4">
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
+                <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Welcome back, {user?.name}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <ThemeToggle />
-              <button onClick={logout} className="btn-secondary flex items-center gap-2 text-sm py-2">
+              <button onClick={logout} className="btn-secondary flex items-center gap-2 text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2">
                 <LogOut className="w-4 h-4" />
                 Logout
               </button>
@@ -84,23 +84,23 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 py-6">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 py-4 sm:py-6">
         {/* Enhanced Stats Grid */}
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
             {/* Total Complaints */}
             <div className="card group hover:scale-[1.02] transition-all cursor-pointer relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary-500/10 to-transparent rounded-full blur-2xl"></div>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
-                    <FileText className="w-5 h-5 text-primary-500" />
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="p-2 sm:p-2.5 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
+                    <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary-500" />
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalComplaints}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.totalComplaints}</p>
                   </div>
                 </div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Complaints</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total Complaints</p>
                 <div className="mt-2 flex items-center gap-1 text-xs text-gray-500 dark:text-gray-500">
                   <TrendingUp className="w-3 h-3" />
                   <span>All time</span>
@@ -112,15 +112,15 @@ export default function AdminDashboard() {
             <div className="card group hover:scale-[1.02] transition-all cursor-pointer relative overflow-hidden border-l-4 border-yellow-500">
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-yellow-500/10 to-transparent rounded-full blur-2xl"></div>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="p-2 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
-                    <Clock className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="p-2 sm:p-2.5 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
+                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600 dark:text-yellow-400" />
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pendingComplaints}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pendingComplaints}</p>
                   </div>
                 </div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Needs Attention</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Needs Attention</p>
                 <div className="mt-2 flex items-center gap-1 text-xs text-yellow-600 dark:text-yellow-400 font-medium">
                   <AlertCircle className="w-3 h-3" />
                   <span>Action required</span>
@@ -132,15 +132,15 @@ export default function AdminDashboard() {
             <div className="card group hover:scale-[1.02] transition-all cursor-pointer relative overflow-hidden border-l-4 border-blue-500">
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-2xl"></div>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                    <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="p-2 sm:p-2.5 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.inProgressComplaints}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.inProgressComplaints}</p>
                   </div>
                 </div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">In Progress</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">In Progress</p>
                 <div className="mt-2 flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400">
                   <Calendar className="w-3 h-3" />
                   <span>Being resolved</span>
@@ -152,15 +152,15 @@ export default function AdminDashboard() {
             <div className="card group hover:scale-[1.02] transition-all cursor-pointer relative overflow-hidden border-l-4 border-green-500">
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-green-500/10 to-transparent rounded-full blur-2xl"></div>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                    <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="p-2 sm:p-2.5 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.resolvedComplaints}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">{stats.resolvedComplaints}</p>
                   </div>
                 </div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Resolved</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Resolved</p>
                 <div className="mt-2 flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
                   <CheckCircle className="w-3 h-3" />
                   <span>{stats.totalComplaints > 0 ? Math.round((stats.resolvedComplaints / stats.totalComplaints) * 100) : 0}% completion</span>
@@ -171,9 +171,9 @@ export default function AdminDashboard() {
         )}
 
         {/* Two Column Layout: Quick Actions + All Complaints */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Left Column: Quick Actions & Urgent */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Quick Filters */}
             <div className="card">
               <div className="flex items-center justify-between mb-4">
@@ -306,15 +306,15 @@ export default function AdminDashboard() {
                 <h3 className="font-bold text-gray-900 dark:text-white">
                   All Complaints ({filteredComplaints.length})
                 </h3>
-                <div className="flex items-center gap-2">
-                  <div className="relative">
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <div className="relative w-full sm:w-auto">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       type="text"
                       placeholder="Search..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white dark:bg-dark-card text-gray-900 dark:text-white"
+                      className="w-full sm:w-auto pl-9 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none bg-white dark:bg-dark-card text-gray-900 dark:text-white"
                     />
                   </div>
                 </div>
