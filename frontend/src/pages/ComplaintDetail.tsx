@@ -162,13 +162,17 @@ export default function ComplaintDetail() {
                     : `${BASE_URL}/uploads/${attachment.fileKey}`
                   
                   return (
-                    <div key={attachment.id} className="relative group overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all">
+                    <div key={attachment.id} className="relative group overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all bg-gray-100 dark:bg-gray-800">
                       <img
                         src={imageUrl}
                         alt={attachment.fileName}
                         className="w-full h-64 object-cover cursor-pointer transition-transform group-hover:scale-105"
                         onDoubleClick={() => setViewerImage(imageUrl)}
                         title="Double-click to view full screen"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://placehold.co/600x400/1f2937/ffffff?text=Image+Expired';
+                          e.currentTarget.onerror = null; // Prevent infinite loop
+                        }}
                       />
                       
                       {/* Overlay with actions */}

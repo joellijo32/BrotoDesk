@@ -203,6 +203,10 @@ export default function ImageViewer({ imageUrl, altText, onClose }: ImageViewerP
               maxHeight: '85vh',
               filter: 'drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5))'
             }}
+            onError={(e) => {
+              e.currentTarget.src = 'https://placehold.co/800x600/1f2937/ffffff?text=Image+Expired+or+Not+Found';
+              e.currentTarget.onerror = null;
+            }}
           />
         </div>
       </div>
