@@ -4,6 +4,7 @@ import { prisma } from '../lib/prisma';
 import { authenticate, authorize, AuthRequest } from '../middleware/auth.middleware';
 import { AppError } from '../middleware/error.middleware';
 import { upload } from '../config/multer';
+import { v2 as cloudinary } from 'cloudinary';
 
 const router = Router();
 
@@ -257,11 +258,16 @@ router.post('/:id/attachments', authenticate, upload.single('photo'), async (req
       throw new AppError('Unauthorized', 403);
     }
 
+    // Determine file key (Cloudinary URL or local filename)
+    const fileKey = (req.file as any).path && (req.file as any).path.startsWith('http') 
+      ? (req.file as any).path 
+      : req.file.filename;
+
     const attachment = await prisma.attachment.create({
       data: {
         complaintId: req.params.id,
         fileName: req.file.originalname,
-        fileKey: req.file.filename,
+        fileKey: fileKey,
         mimeType: req.file.mimetype,
         fileSize: req.file.size
       }
@@ -307,12 +313,33 @@ router.delete('/attachments/:attachmentId', authenticate, async (req: AuthReques
       throw new AppError('Unauthorized', 403);
     }
 
-    // Delete file from disk
-    const fs = await import('fs');
-    const path = await import('path');
-    const filePath = path.join(__dirname, '../../uploads', attachment.fileKey);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+    // Delete file
+    if (attachment.fileKey.startsWith('http')) {
+      // Cloudinary file deletion
+      try {
+        // Extract public_id from URL
+        // Example: https://res.cloudinary.com/demo/image/upload/v1312461204/brotodesk-complaints/sample.jpg
+        const urlParts = attachment.fileKey.split('/');
+        const filenameWithExt = urlParts[urlParts.length - 1];
+        const folder = urlParts[urlParts.length - 2]; // 'brotodesk-complaints'
+        const filename = filenameWithExt.split('.')[0];
+        const publicId = `${folder}/${filename}`;
+        
+        if (process.env.CLOUDINARY_CLOUD_NAME) {
+           await cloudinary.uploader.destroy(publicId);
+        }
+      } catch (err) {
+        console.error('Failed to delete from Cloudinary:', err);
+        // Continue to delete from DB even if cloud delete fails
+      }
+    } else {
+      // Local file deletion
+      const fs = await import('fs');
+      const path = await import('path');
+      const filePath = path.join(__dirname, '../../uploads', attachment.fileKey);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
     }
 
     await prisma.attachment.delete({

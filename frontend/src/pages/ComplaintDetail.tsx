@@ -157,7 +157,10 @@ export default function ComplaintDetail() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {attachments.map((attachment) => {
-                  const imageUrl = `${BASE_URL}/uploads/${attachment.fileKey}`
+                  const imageUrl = attachment.fileKey.startsWith('http') 
+                    ? attachment.fileKey 
+                    : `${BASE_URL}/uploads/${attachment.fileKey}`
+                  
                   return (
                     <div key={attachment.id} className="relative group overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all">
                       <img
