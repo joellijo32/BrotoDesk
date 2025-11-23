@@ -24,7 +24,7 @@ if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && proce
     params: {
       folder: 'brotodesk-complaints',
       allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],
-      public_id: (_req, file) => {
+      public_id: (_req: any, _file: any) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         return `complaint-${uniqueSuffix}`;
       },
