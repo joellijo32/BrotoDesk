@@ -325,4 +325,29 @@ router.delete('/attachments/:attachmentId', authenticate, async (req: AuthReques
   }
 });
 
+// Delete complaint (Admin only)
+router.delete('/:id', authenticate, authorize('ADMIN', 'SUPERADMIN'), async (req: AuthRequest, res, next) => {
+  try {
+    const complaint = await prisma.complaint.findUnique({
+      where: { id: req.params.id }
+    });
+
+    if (!complaint) {
+      throw new AppError('Complaint not found', 404);
+    }
+
+    // Delete all related data first (attachments, notifications, etc if not cascading)
+    // Prisma usually handles cascading if configured, but let's be safe or rely on schema
+    // Assuming schema has onDelete: Cascade for relations
+    
+    await prisma.complaint.delete({
+      where: { id: req.params.id }
+    });
+
+    res.json({ message: 'Complaint deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

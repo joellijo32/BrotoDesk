@@ -42,6 +42,8 @@ export const complaintAPI = {
   updateStatus: (id: string, data: { status: string; adminResponse?: string }) =>
     api.post(`/complaints/${id}/status`, data),
   
+  delete: (id: string) => api.delete(`/complaints/${id}`),
+
   assign: (id: string, adminId: string) =>
     api.post(`/complaints/${id}/assign`, { adminId }),
   

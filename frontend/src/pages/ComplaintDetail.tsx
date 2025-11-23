@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { complaintAPI } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
-import { ArrowLeft, User, Calendar, Tag, Image as ImageIcon, Download, Eye } from 'lucide-react'
+import { ArrowLeft, User, Calendar, Tag, Image as ImageIcon, Download, Eye, Trash2 } from 'lucide-react'
 import ThemeToggle from '../components/ThemeToggle'
 import ImageViewer from '../components/ImageViewer'
 
@@ -71,6 +71,19 @@ export default function ComplaintDetail() {
     } catch (error: any) {
       toast.error(error.response?.data?.error || 'Update failed')
       setUpdating(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!complaint) return
+    if (!window.confirm('Are you sure you want to delete this complaint? This action cannot be undone.')) return
+
+    try {
+      await complaintAPI.delete(complaint.id)
+      toast.success('Complaint deleted successfully')
+      navigate('/admin')
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || 'Delete failed')
     }
   }
 
@@ -257,6 +270,16 @@ export default function ComplaintDetail() {
               >
                 {updating ? 'Updating...' : 'Update & Notify Student'}
               </button>
+
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+                <button
+                  onClick={handleDelete}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Complaint
+                </button>
+              </div>
             </div>
           </div>
         )}
