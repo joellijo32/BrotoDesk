@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { complaintAPI } from '../lib/api'
+import { complaintAPI, BASE_URL } from '../lib/api'
 import { Complaint } from '../types'
 import toast from 'react-hot-toast'
 import { ArrowLeft, User, Calendar, Tag, Image as ImageIcon, Download, Eye, Trash2 } from 'lucide-react'
@@ -157,7 +157,7 @@ export default function ComplaintDetail() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {attachments.map((attachment) => {
-                  const imageUrl = `http://localhost:5000/uploads/${attachment.fileKey}`
+                  const imageUrl = `${BASE_URL}/uploads/${attachment.fileKey}`
                   return (
                     <div key={attachment.id} className="relative group overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all">
                       <img

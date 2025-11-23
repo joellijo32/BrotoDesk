@@ -658,6 +658,22 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+    processFile(file)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const file = e.dataTransfer.files?.[0]
+    processFile(file)
+  }
+
+  const processFile = (file: File | undefined) => {
     if (file) {
       // Validate file type
       if (!file.type.startsWith('image/')) {
@@ -793,7 +809,11 @@ function CreateComplaintModal({ onClose, onSuccess }: { onClose: () => void; onS
                 </button>
               </div>
             ) : (
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 dark:border-gray-800 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-dark-300 transition-colors">
+              <label 
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 dark:border-gray-800 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-dark-300 transition-colors"
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <Upload className="w-10 h-10 mb-2 text-gray-400 dark:text-gray-400" />
                   <p className="text-sm text-gray-500 dark:text-gray-400">
